@@ -96,7 +96,7 @@ async def main() -> None:
 
                 # 입력값 검증 : "숫자" 또는 "숫자-숫자" 만 입력할때까지 입력을 받는다.
                 dialog = input_until_correct_download_range(
-                    default_prompt="몇화부터 몇화까지 다운로드 받으시겠습니까? 예) 1-10 , 5: ",
+                    default_prompt="몇화부터 몇화까지 다운로드 받으시겠습니까? 예) 1-10 , 5 (default: 전체): ",
                     error_prompt=">>> 다시 입력해주세요. 예) 1-10 , 5: ",
                 )
 
@@ -112,6 +112,11 @@ async def main() -> None:
 
                 # 검증된 입력값에 대해 다운로드 진행
                 if (
+                    dialog == ""
+                    ):  # 공백 입력시 전체 다운로드
+                    await downloader.download(start=1, end=len(analyzer.full_episodes))
+                    input("다운로드가 완료되었습니다.")
+                elif (
                     dialog.find("-") == -1
                 ):  # 숫자만 입력했을때 ("-" 입력하지 않고 순수한 문자만 입력시)
                     start = int(dialog)
