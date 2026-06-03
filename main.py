@@ -20,7 +20,7 @@ from module.title_changer import change_title
 
 
 async def main() -> None:
-    # 윈도우 인 경우 콘솔 타이틀 변경
+    # 윈도우에서 실행한 경우 콘솔 타이틀 변경
     change_title()
 
     # 세팅 파일 없으면 자동 생성 & 값 읽기
@@ -154,8 +154,12 @@ async def main() -> None:
                 input("올바르지 않은 입력입니다.")
                 # 콘솔 청소 (Cross-Platform)
                 os.system("cls" if os.name == "nt" else "clear")
+        except (KeyboardInterrupt, EOFError, asyncio.CancelledError):
+            # Ctrl + C 강제 종료 처리
+            print("\n사용자 입력으로 프로그램을 종료합니다.")
+            exit(1)
         except Exception as e:
-            print(e)
+            print(e, type(e))
             input("오류가 발생했습니다.")
 
 
